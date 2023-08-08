@@ -1,0 +1,84 @@
+{
+"InsideScoring":{
+"Acrobat" : "None",
+"Aerial_Wizard" : "None",
+"Backdown_Punisher" : "None",
+"Bully" : "None",
+"Dream_Shake" : "None",
+"Dropstepper" : "None",
+"Fast_Twitch" : "None",
+"Giant_Slayer" : "None",
+"Limitless_Takeoff" : "None",
+"Masher" : "None",
+"Post_Spin_Technician" : "None",
+"Posterizer" : "None",
+"Pro_Touch" : "None",
+"Rise_Up" : "None",
+"Slithery" : "None",
+"Head_Durability" : "None"
+},
+
+"OutsideScoring":{
+"Agent_3" : "None",
+"Amped" : "None",
+"Blinders" : "None",
+"Catch_&_Shoot" : "None",
+"Claymore" : "None",
+"Clutch_Shooter" : "None",
+"Comeback_Kid" : "None",
+"Corner_Specialist" : "None",
+"Dead_Eye" : "None",
+"Green_Machine" : "None",
+"Guard_Up" : "None",
+"Limitless_Range" : "None",
+"Middy_Magician" : "None",
+"Slippery_Off_ball" : "None",
+"Space_Creator" : "None",
+"Volume_Shooter" : "None"}
+,
+
+"Playmaking":{
+"Ankle_Breaker" : "None",
+"Bail_Out" : "None",
+"Break_Starter" : "None",
+"Clamp_Breaker" : "None",
+"Killer_Combos" : "None",
+"Dimer" : "None",
+"Floor_General" : "None",
+"Handles_For_Days" : "None",
+"Hyperdrive" : "None",
+"Mismatch_Expert" : "None",
+"Needle_Threader" : "None",
+"Post_Playmaker" : "None",
+"Quick_First_Step" : "None",
+"Special_Delivery" : "None",
+"Unpluckable" : "None",
+"Vice_Grip" : "None"}
+,
+
+"Defending":{
+"Anchor" : "None",
+"Ankle_Braces" : "None",
+"Challenger" : "None",
+"Chase_Down_Artist" : "None",
+"Clamps" : "None",
+"Glove" : "None",
+"Interceptor" : "None",
+"Menace" : "None",
+"Off_Ball_Pest" : "None",
+"Pick_Dodger" : "None",
+"Post_Lockdown" : "None",
+"Pogo_Stick" : "None",
+"Post_Playmaker" : "None",
+"Work_Horse" : "None"}
+,
+
+"Athleticism":{
+"Brick_Wall" : "None"}
+,
+
+"Rebounding":{
+"Boxout_Beast" : "None",
+	"Rebound_Chaser" : "None"
+}
+}

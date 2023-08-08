@@ -1,0 +1,72 @@
+{
+
+"Offense":{
+"Driving_Layup": 75,
+"Post_Fade": 75,
+"Post_Hook" : 75,
+"Post_Control" : 75,
+"Draw_Foul" : 75,
+"Close_Shot" : 75,
+"Mid_Range_Shot" : 75,
+"Three_Point_Shot" : 75,
+"Free_Throw" : 75,
+"Ball_Handle" : 75,
+"Pass_IQ" : 75,
+"Pass_Accuracy" : 75,
+"Offensive_Rebound" : 75,
+"Standing_Dunk" : 75,
+"Driving_Dunk" : 75,
+"Shot_IQ" : 75,
+"Pass_Vision" : 75,
+"Hands" : 75},
+
+"Defense":{
+"Defensive_Rebound" : 75,
+"Interior_Defense" : 75,
+"Perimeter_Defense" : 75,
+"Block" : 75,
+"Steal" : 75,
+"Shot_Contest" : 75},
+
+"Athleticism":{
+"Lateral_Quickness" : 75,
+"Speed" : 75,
+"Speed_With_Ball" : 75,
+"Acceleration" : 75,
+"Vertical" : 75,
+"Strength" : 75,
+"Stamina" : 75,
+"Hustle" : 75},
+
+"Durability":{
+"Head_Durability" : 75,
+"Neck_Durability" : 75,
+"Back_Durability" : 75,
+"Left_Shoulder_Durability" : 75,
+"Right_Shoulder_Durability" : 75,
+"Left_Elbow_Durability" : 75,
+"Right_Elbow_Durabilty" : 75,
+"Left_Hip_Durability" : 75,
+"Right_Hip_Durability" : 75,
+"Left_Knee_Durability" : 75,
+"Right_Knee_Durability" : 75,
+"Left_Ankle_Durability" : 75,
+"Right_Ankle_Durability" : 75,
+"Left_Foot_Durability" : 75,
+"Right_Foot_Durability" : 75,
+"Miscellaneous_Durability" : 75},
+
+
+"Mental":{
+"Pass_Perception" : 75,
+"Defensive_Consistency" : 75,
+"Help_Defense_IQ" : 75,
+"Offensive_Consistency" : 75,
+"Pick_And_Roll_Defense_IQ" : 75},
+
+
+"Misc":{
+"Intangibles" : 75,
+"Potential" : 75
+}
+}
