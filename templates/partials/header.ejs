@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><%= title %> · 2K27 Player Randomizer</title>
 <link rel="icon" href="/images/ball.svg" type="image/svg+xml">
+<% if (typeof meta === 'object' && meta) { %>
+<meta name="description" content="<%= meta.description %>">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="2K27 Player Randomizer">
+<meta property="og:title" content="<%= meta.title %>">
+<meta property="og:description" content="<%= meta.description %>">
+<meta property="og:url" content="<%= meta.url %>">
+<meta name="twitter:card" content="summary">
+<% } %>
 <link rel="stylesheet" href="/css/style.css">
 <script src="/js/fx.js" defer></script>
 </head>

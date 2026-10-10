@@ -201,3 +201,62 @@ test('guests are limited to a handful of unsaved players', async () => {
 	assert.equal(res.status, 400);
 	assert.match(res.text, /Guests can keep up to 5 players/);
 });
+
+test('owners can share a read-only card, stop sharing, and links die with the player', async () => {
+	const owner = client(base);
+	await owner('POST', '/register', { username: 'sharer', password: 'password1', confirm: 'password1' });
+	const { location: playerUrl } = await owner('POST', '/players', { name: 'Show "Off" <3' });
+
+	let res = await owner('GET', playerUrl);
+	assert.match(res.text, /Create share link/);
+	assert.doesNotMatch(res.text, /\/card\//);
+
+	res = await owner('POST', `${playerUrl}/share`);
+	assert.equal(res.location, `${playerUrl}#share`);
+	res = await owner('GET', playerUrl);
+	const cardUrl = res.text.match(/http:\/\/localhost:\d+(\/card\/[\w-]{16})/)[1];
+	assert.match(res.text, /Stop sharing/);
+
+	// Sharing again keeps the same link.
+	await owner('POST', `${playerUrl}/share`);
+	assert.ok((await owner('GET', playerUrl)).text.includes(cardUrl));
+
+	// Anyone can view it, read-only.
+	const visitor = client(base);
+	res = await visitor('GET', cardUrl);
+	assert.equal(res.status, 200);
+	assert.match(res.text, /Built by <strong>sharer<\/strong>/);
+	assert.match(res.text, /Show &#34;Off&#34; &lt;3/);
+	assert.match(res.text, /<meta property="og:title" content="Show &#34;Off&#34; &lt;3 · \d+ OVR/);
+	assert.doesNotMatch(res.text, /\/reroll|\/delete|\/share"|Stop sharing|playing as a guest/);
+
+	// Visitors can't act on the player through its real id.
+	assert.equal((await visitor('POST', `${playerUrl}/reroll`, { section: 'badges' })).status, 404);
+
+	await owner('POST', `${playerUrl}/unshare`);
+	assert.equal((await visitor('GET', cardUrl)).status, 404);
+
+	// Re-sharing issues a fresh link; deleting the player kills it.
+	await owner('POST', `${playerUrl}/share`);
+	const fresh = (await owner('GET', playerUrl)).text.match(/(\/card\/[\w-]{16})/)[1];
+	assert.notEqual(fresh, cardUrl);
+	assert.equal((await visitor('GET', fresh)).status, 200);
+	await owner('POST', `${playerUrl}/delete`);
+	assert.equal((await visitor('GET', fresh)).status, 404);
+});
+
+test('guests are asked to sign up before sharing; others cannot share your player', async () => {
+	const guest = client(base);
+	const { location } = await guest('POST', '/players', { name: 'Guest Share' });
+	const res = await guest('POST', `${location}/share`);
+	assert.equal(res.location, '/register');
+	assert.match((await guest('GET', '/register')).text, /Sign up to share your player/);
+
+	const owner = client(base);
+	await owner('POST', '/register', { username: 'mine2', password: 'password1', confirm: 'password1' });
+	const mine = (await owner('POST', '/players', { name: 'Mine Two' })).location;
+	const other = client(base);
+	await other('POST', '/register', { username: 'thief', password: 'password1', confirm: 'password1' });
+	assert.equal((await other('POST', `${mine}/share`)).status, 404);
+	assert.equal((await client(base)('GET', '/card/doesnotexist0000')).status, 404);
+});

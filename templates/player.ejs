@@ -1,13 +1,28 @@
-<%- include('partials/header', { bodyAttrs: info.overall >= 90 ? 'data-fx-exit data-fx-celebrate' : 'data-fx-exit' }) %>
+<%- include('partials/header', {
+  bodyAttrs: info.overall >= 90 ? 'data-fx-exit data-fx-celebrate' : 'data-fx-exit',
+  meta: shared ? {
+    title: `${build.name} · ${info.overall} OVR ${build.physicals.position}`,
+    description: `${info.archetype} · ${info.position.label} · ${formatInches(build.physicals.height)}, ${build.physicals.weight} lbs · ${info.badgeCount} badges. Built by ${ownerName} on 2K27 Player Randomizer.`,
+    url: shareLink,
+  } : null,
+}) %>
 <%
   const ph = build.physicals;
   const tiers = data.BADGES.tiers;
   const equipped = Object.values(build.badges).filter((t) => t > 0);
   const locked = build.lockedPhysicals;
-  const lockIcon = (f) => (locked[f] != null ? '🔒' : '');
-  const reroll = (section, label) => `<form action="/players/${build.id}/reroll" method="post" class="inline" data-fx-submit="squeak" data-fx-reveal><input type="hidden" name="section" value="${section}"><button class="btn btn-sm btn-ghost" type="submit">🎲 ${label}</button></form>`;
+  const lockIcon = (f) => (!shared && locked[f] != null ? '🔒' : '');
+  const reroll = (section, label) => shared ? '' : `<form action="/players/${build.id}/reroll" method="post" class="inline" data-fx-submit="squeak" data-fx-reveal><input type="hidden" name="section" value="${section}"><button class="btn btn-sm" type="submit">🎲 ${label}</button></form>`;
 %>
-<%- include('partials/guest-banner') %>
+<% if (shared) { %>
+  <div class="shared-banner">
+    <span>🏀 Built by <strong><%= ownerName %></strong> on 2K27 Player Randomizer</span>
+    <a class="btn btn-sm" href="/players/new">Roll your own</a>
+  </div>
+<% } else { %>
+  <%- include('partials/guest-banner') %>
+<% } %>
+<script type="application/json" id="card-data"><%- JSON.stringify(card).replace(/</g, '\\u003c') %></script>
 <section class="player-card">
   <div class="ovr ovr-lg <%= ratingClass(info.overall) %>">
     <span class="ovr-label">OVR</span><span data-fx-count="<%= info.overall %>"><%= info.overall %></span>
@@ -29,6 +44,7 @@
   </dl>
   <div class="card-actions">
     <% if (canRerollPhysicals) { %><%- reroll('physicals', 'Re-roll physicals') %><% } %>
+    <% if (shared) { %><button type="button" class="btn btn-sm btn-ghost" data-card-download>⬇ Download card</button><% } %>
   </div>
 </section>
 
@@ -82,6 +98,36 @@
   </div>
 </section>
 
+<% if (!shared) { %>
+<section class="panel share-panel" id="share">
+  <div class="section-head">
+    <h2>Share</h2>
+    <% if (shareLink) { %>
+      <form action="/players/<%= build.id %>/unshare" method="post" class="inline">
+        <button type="submit" class="btn btn-sm btn-ghost">Stop sharing</button>
+      </form>
+    <% } %>
+  </div>
+  <% if (shareLink) { %>
+    <p class="hint">Anyone with this link can view <%= build.name %> (read-only). Re-rolls show up on the shared card too.</p>
+    <div class="share-link">
+      <input type="text" readonly value="<%= shareLink %>" id="share-url" aria-label="Share link">
+      <button type="button" class="btn" data-copy="#share-url">Copy link</button>
+      <button type="button" class="btn btn-ghost" data-native-share data-url="<%= shareLink %>" data-title="<%= build.name %> · <%= info.overall %> OVR" hidden>Share…</button>
+    </div>
+  <% } else { %>
+    <p class="hint">Create a link so friends can see this player's card, ratings, and badges.</p>
+  <% } %>
+  <div class="share-actions">
+    <% if (!shareLink) { %>
+      <form action="/players/<%= build.id %>/share" method="post" class="inline">
+        <button type="submit" class="btn">🔗 Create share link</button>
+      </form>
+    <% } %>
+    <button type="button" class="btn btn-ghost" data-card-download>⬇ Download card image</button>
+  </div>
+</section>
+
 <section class="danger-zone">
   <details>
     <summary>Delete this player</summary>
@@ -92,4 +138,6 @@
   </details>
   <p class="muted">Created <%= new Date(build.createdAt).toLocaleDateString('en-US', { dateStyle: 'medium' }) %></p>
 </section>
+<% } %>
+<script src="/js/share.js" defer></script>
 <%- include('partials/footer') %>

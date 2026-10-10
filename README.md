@@ -15,6 +15,8 @@ No account is needed to start. Guests can create, view, and re-roll up to 5 play
 
 Every player gets a card page with OVR, a play-style label, rating bars, and badges. Each section can be re-rolled. Re-rolling physicals keeps any fields you locked, and re-rolls use the style and level the player was created with.
 
+**Sharing:** from a player's page, owners can create a share link (`/card/<id>`) that anyone can open as a read-only card with link-preview tags, copy it, use the device's share sheet, or download a 1200×630 PNG of the card. Turning sharing off, or deleting the player, kills the link. Guests are asked to sign up first, since their players aren't saved.
+
 Sound effects (dribbles, net swish, sneaker squeaks, buzzer, crowd cheer, badge chimes) are synthesized in the browser with the Web Audio API in `public/js/fx.js`, so there are no audio files to host. The speaker button in the nav mutes them, and the setting is remembered. Animations turn off for visitors with "reduce motion" enabled.
 
 ## Running
@@ -37,6 +39,7 @@ The app runs on http://localhost:7700. Without `MONGODB_URI`, data goes to `.dat
 | `MONGODB_DB` | Database name (default `nba`). |
 | `DATA_FILE` | Path for the local JSON store (default `.data/db.json`). |
 | `PORT` | Port (default `7700`). |
+| `PUBLIC_URL` | Base URL for share links, e.g. `https://randomizer.example.com`. Defaults to the request's host. |
 
 Accounts from the old 2K23 site still work. Their passwords are upgraded to bcrypt the next time they log in.
 

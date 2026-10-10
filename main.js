@@ -55,7 +55,42 @@ function sessionBuilds(session) {
 	};
 }
 
-function createApp(store, { sessionSecret, secureCookies = false } = {}) {
+// Compact summary of a player for share previews and the downloadable card image.
+function cardSummary(build, info) {
+	const { BADGES, ATTRIBUTES } = randomizer;
+	const tierCounts = BADGES.tiers.map((_, tier) => Object.values(build.badges).filter((t) => t === tier).length);
+	const topBadges = randomizer.BADGE_LIST.filter((b) => build.badges[b.id] > 0)
+		.sort((a, b) => build.badges[b.id] - build.badges[a.id])
+		.slice(0, 6)
+		.map((b) => ({ label: b.label, tier: build.badges[b.id] }));
+	const categories = ATTRIBUTES.categories
+		.filter((c) => !c.excludeFromOverall)
+		.map((c) => ({
+			label: c.label,
+			value: Math.round(c.attributes.reduce((sum, a) => sum + build.attributes[a.id], 0) / c.attributes.length),
+		}));
+	const ph = build.physicals;
+	return {
+		name: build.name,
+		overall: info.overall,
+		archetype: info.archetype,
+		positions: `${info.position.label} / ${info.secondaryPosition.label}`,
+		vitals: [
+			['POS', `${ph.position}/${ph.secondaryPosition}`],
+			['HT', randomizer.formatInches(ph.height)],
+			['WT', `${ph.weight} lbs`],
+			['WS', randomizer.formatInches(ph.wingspan)],
+		],
+		level: `${info.level.label} · ${info.level.floor}-${ATTRIBUTES.max}`,
+		categories,
+		tiers: BADGES.tiers,
+		tierCounts,
+		topBadges,
+		badgeCount: info.badgeCount,
+	};
+}
+
+function createApp(store, { sessionSecret, secureCookies = false, publicUrl } = {}) {
 	const app = express();
 
 	app.set('view engine', 'ejs');
@@ -253,11 +288,65 @@ function createApp(store, { sessionSecret, secureCookies = false } = {}) {
 		next();
 	});
 
-	app.get('/players/:id', loadBuild, (req, res) => {
-		const build = req.build;
-		const canRerollPhysicals = PHYSICAL_FIELDS.some((f) => build.lockedPhysicals[f] == null);
-		res.render('player', { title: build.name, build, info: randomizer.describe(build), canRerollPhysicals, data: randomizer });
-	});
+	const shareUrl = (req, shareId) => `${publicUrl || `${req.protocol}://${req.get('host')}`}/card/${shareId}`;
+
+	const renderCard = (req, res, build, extra) => {
+		const info = randomizer.describe(build);
+		const card = cardSummary(build, info);
+		res.render('player', {
+			title: build.name,
+			build,
+			info,
+			card,
+			data: randomizer,
+			canRerollPhysicals: PHYSICAL_FIELDS.some((f) => build.lockedPhysicals[f] == null),
+			shareLink: build.shareId ? shareUrl(req, build.shareId) : null,
+			shared: false,
+			...extra,
+		});
+	};
+
+	app.get('/players/:id', loadBuild, (req, res) => renderCard(req, res, req.build));
+
+	// Public, read-only view of a player its owner chose to share.
+	app.get(
+		'/card/:shareId',
+		wrap(async (req, res) => {
+			const build = await store.getSharedBuild(req.params.shareId);
+			if (!build) {
+				return res.status(404).render('error', { title: 'Not Found', message: "This player card isn't shared anymore." });
+			}
+			const owner = await store.findUser(build.owner);
+			renderCard(req, res, build, { shared: true, ownerName: owner?.username || build.owner });
+		}),
+	);
+
+	app.post(
+		'/players/:id/share',
+		loadBuild,
+		wrap(async (req, res) => {
+			const builds = buildsFor(req);
+			if (builds.guest) {
+				flash(req, 'info', 'Sign up to share your player. Your guest players come with you.');
+				return res.redirect('/register');
+			}
+			if (!req.build.shareId) {
+				await builds.update(req.build.id, { shareId: crypto.randomBytes(12).toString('base64url') });
+			}
+			flash(req, 'success', 'Share link ready. Anyone with the link can view this player.');
+			res.redirect(`/players/${req.build.id}#share`);
+		}),
+	);
+
+	app.post(
+		'/players/:id/unshare',
+		loadBuild,
+		wrap(async (req, res) => {
+			await buildsFor(req).update(req.build.id, { shareId: null });
+			flash(req, 'info', 'Sharing turned off. The old link no longer works.');
+			res.redirect(`/players/${req.build.id}`);
+		}),
+	);
 
 	app.post(
 		'/players/:id/reroll',
@@ -307,7 +396,11 @@ async function start() {
 		if (production) throw new Error('SESSION_SECRET must be set in production.');
 		console.warn('SESSION_SECRET not set; using a random secret (sessions reset on restart).');
 	}
-	const app = createApp(store, { sessionSecret: process.env.SESSION_SECRET, secureCookies: production });
+	const app = createApp(store, {
+		sessionSecret: process.env.SESSION_SECRET,
+		secureCookies: production,
+		publicUrl: process.env.PUBLIC_URL?.replace(/\/$/, ''),
+	});
 	const port = Number(process.env.PORT) || 7700;
 	app.listen(port, () => console.log(`2K27 Randomizer running on http://localhost:${port} (${store.constructor.name})`));
 }
