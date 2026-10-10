@@ -1,0 +1,9 @@
+<%- include('partials/header') %>
+<section class="panel narrow center">
+  <img class="airball" src="/images/ball.svg" alt="" width="72" height="72">
+  <p class="eyebrow">Airball!</p>
+  <h1><%= title %></h1>
+  <p><%= message %></p>
+  <a class="btn" href="<%= user ? '/players' : '/' %>">Back</a>
+</section>
+<%- include('partials/footer') %>

@@ -1,0 +1,98 @@
+<%- include('partials/header') %>
+<%
+  const P = data.PHYSICALS;
+  const L = P.limits;
+  const val = (k, d = '') => (form[k] ?? d);
+  const attributesMode = val('attributesMode', 'realistic');
+  const badgesMode = val('badgesMode', 'realistic');
+  const level = val('level', data.ATTRIBUTES.defaultLevel);
+  const positionSelect = (name, id) => {
+    const selected = val(name);
+    return `<select name="${name}" id="${id}"><option value="">🎲 Random</option>` +
+      P.positions.map((p) => `<option value="${p.id}"${selected === p.id ? ' selected' : ''}>${p.label} (${p.id})</option>`).join('') +
+      '</select>';
+  };
+  const inchOptions = (name, range) => {
+    const selected = Number(val(name));
+    let html = '<option value="">🎲 Random</option>';
+    for (let i = range.min; i <= range.max; i++) html += `<option value="${i}"${selected === i ? ' selected' : ''}>${formatInches(i)}</option>`;
+    return html;
+  };
+  const modeRadio = (name, value, label, current) =>
+    `<label><input type="radio" name="${name}" value="${value}"${current === value ? ' checked' : ''}> ${label}</label>`;
+%>
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Create Player</p>
+    <h1>New Player</h1>
+  </div>
+</section>
+<% if (error) { %><div class="flash flash-error"><%= error %></div><% } %>
+
+<form action="/players" method="post" class="builder" id="builder" data-fx-submit="dribble" data-fx-reveal>
+  <script type="application/json" id="physicals-config"><%- JSON.stringify(P).replace(/</g, '\\u003c') %></script>
+
+  <fieldset class="panel">
+    <legend><span class="step">1</span> Player Info</legend>
+    <label>Name
+      <input name="name" value="<%= val('name') %>" maxlength="40" placeholder="e.g. Buckets McGee" required>
+    </label>
+  </fieldset>
+
+  <fieldset class="panel">
+    <legend><span class="step">2</span> Physicals</legend>
+    <p class="hint">Leave a field on <strong>🎲 Random</strong> to roll a realistic value for the position. Fields you set stay put when you re-roll physicals, and like the in-game editor, any combination is allowed.</p>
+    <div class="grid-5">
+      <label>Position <%- positionSelect('position', 'position') %></label>
+      <label>Secondary Position <%- positionSelect('secondaryPosition', 'secondary') %></label>
+      <label>Height
+        <select name="height" id="height"><%- inchOptions('height', L.height) %></select>
+      </label>
+      <label>Weight (lbs)
+        <input name="weight" id="weight" type="number" inputmode="numeric" min="<%= L.weight.min %>" max="<%= L.weight.max %>" value="<%= val('weight') %>" placeholder="🎲 Random">
+        <small class="hint" id="weight-hint"><%= L.weight.min %>–<%= L.weight.max %> lbs</small>
+      </label>
+      <label>Wingspan
+        <select name="wingspan" id="wingspan"><%- inchOptions('wingspan', L.wingspan) %></select>
+        <small class="hint" id="wingspan-hint"></small>
+      </label>
+    </div>
+  </fieldset>
+
+  <fieldset class="panel mode-section">
+    <legend><span class="step">3</span> Attributes</legend>
+    <h3>Style</h3>
+    <div class="segmented">
+      <%- modeRadio('attributesMode', 'realistic', '🎲 Realistic', attributesMode) %>
+      <%- modeRadio('attributesMode', 'chaos', '🌀 Chaos', attributesMode) %>
+    </div>
+    <p class="hint mode-realistic">All <%= data.ATTRIBUTE_LIST.length %> ratings are rolled to look like a real player, shaped by position and body type with a random talent level.</p>
+    <p class="hint mode-chaos">Every rating is rolled independently anywhere in the level's range.</p>
+    <h3>Level</h3>
+    <div class="levels">
+      <% for (const l of data.ATTRIBUTES.levels) { %>
+        <label class="level level-<%= l.id %>">
+          <input type="radio" name="level" value="<%= l.id %>" <%= level === l.id ? 'checked' : '' %>>
+          <span class="level-name"><%= l.label %></span>
+          <span class="level-range"><%= l.floor %>–<%= data.ATTRIBUTES.max %></span>
+        </label>
+      <% } %>
+    </div>
+    <p class="hint">The level sets the range every rating is rolled in: Rookie never drops below <%= data.ATTRIBUTES.levels[0].floor %>, while Legend uses the editor's full range.</p>
+  </fieldset>
+
+  <fieldset class="panel mode-section">
+    <legend><span class="step">4</span> Badges</legend>
+    <div class="segmented">
+      <%- modeRadio('badgesMode', 'realistic', '🎲 Realistic', badgesMode) %>
+      <%- modeRadio('badgesMode', 'chaos', '🌀 Chaos', badgesMode) %>
+      <%- modeRadio('badgesMode', 'none', '🚫 No badges', badgesMode) %>
+    </div>
+    <p class="hint mode-realistic">Badges are more likely, and higher tier, when the related ratings are high, so higher levels earn more of them.</p>
+    <p class="hint mode-chaos">Every badge rolls any tier from None to Legend.</p>
+  </fieldset>
+
+  <button type="submit" class="btn btn-lg btn-block generate"><span class="ball-icon" aria-hidden="true"></span><span class="generate-label">Generate Player</span><span class="generate-busy">Rolling…</span></button>
+</form>
+<script src="/js/create.js"></script>
+<%- include('partials/footer') %>

@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+<section class="hero">
+  <div class="hero-art" aria-hidden="true">
+    <img class="hero-ball" src="/images/ball.svg" alt="" width="120" height="120">
+    <span class="hero-shadow"></span>
+  </div>
+  <p class="eyebrow">Create Player · 2K27 Edition</p>
+  <h1>Roll the dice on your next build.</h1>
+  <p class="lead">Randomize a player the way the NBA 2K27 Create Player editor builds one: physicals, the full set of ratings, and badges. Or lock in the parts you care about and let the rest ride.</p>
+  <div class="hero-actions">
+    <% if (user) { %>
+      <a class="btn btn-lg" href="/players/new">Create a Player</a>
+      <a class="btn btn-lg btn-ghost" href="/players">My Players</a>
+    <% } else { %>
+      <a class="btn btn-lg" href="/players/new">Try It Now</a>
+      <a class="btn btn-lg btn-ghost" href="/register">Sign Up to Save Players</a>
+    <% } %>
+  </div>
+  <% if (!user) { %><p class="hint">No account needed to start. Sign up any time to save the players you've made.</p><% } %>
+</section>
+<section class="features">
+  <article class="feature">
+    <span class="feature-num">01</span>
+    <h2>Physicals</h2>
+    <p>Position, secondary position, height, weight, and wingspan. Each one is either random or locked, and any combination is allowed, just like the editor.</p>
+  </article>
+  <article class="feature">
+    <span class="feature-num">02</span>
+    <h2>Attributes</h2>
+    <p>All 37 roster ratings, from Close Shot to Potential. Roll a realistic player or go full chaos, at five levels from Rookie (65–99) to Legend (25–99).</p>
+  </article>
+  <article class="feature">
+    <span class="feature-num">03</span>
+    <h2>Badges</h2>
+    <p>Forty badges from Bronze to Legend. Roll them to fit the ratings, roll them at random, pick them, or play with none.</p>
+  </article>
+</section>
+<%- include('partials/footer') %>

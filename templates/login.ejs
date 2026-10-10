@@ -1,0 +1,16 @@
+<%- include('partials/header') %>
+<section class="panel narrow">
+  <h1>Log In</h1>
+  <% if (error) { %><div class="flash flash-error"><%= error %></div><% } %>
+  <form action="/login" method="post" class="stack">
+    <label>Username
+      <input name="username" value="<%= username %>" autocomplete="username" required autofocus>
+    </label>
+    <label>Password
+      <input name="password" type="password" autocomplete="current-password" required>
+    </label>
+    <button type="submit" class="btn btn-block">Log In</button>
+  </form>
+  <p class="muted center">New here? <a href="/register">Create an account</a></p>
+</section>
+<%- include('partials/footer') %>

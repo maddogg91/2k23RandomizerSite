@@ -1,0 +1,95 @@
+<%- include('partials/header', { bodyAttrs: info.overall >= 90 ? 'data-fx-exit data-fx-celebrate' : 'data-fx-exit' }) %>
+<%
+  const ph = build.physicals;
+  const tiers = data.BADGES.tiers;
+  const equipped = Object.values(build.badges).filter((t) => t > 0);
+  const locked = build.lockedPhysicals;
+  const lockIcon = (f) => (locked[f] != null ? '🔒' : '');
+  const reroll = (section, label) => `<form action="/players/${build.id}/reroll" method="post" class="inline" data-fx-submit="squeak" data-fx-reveal><input type="hidden" name="section" value="${section}"><button class="btn btn-sm btn-ghost" type="submit">🎲 ${label}</button></form>`;
+%>
+<%- include('partials/guest-banner') %>
+<section class="player-card">
+  <div class="ovr ovr-lg <%= ratingClass(info.overall) %>">
+    <span class="ovr-label">OVR</span><span data-fx-count="<%= info.overall %>"><%= info.overall %></span>
+  </div>
+  <div class="player-id">
+    <p class="eyebrow"><%= info.position.label %> / <%= info.secondaryPosition.label %></p>
+    <h1><%= build.name %></h1>
+    <p class="archetype"><%= info.archetype %></p>
+    <p class="build-tags">
+      <span><%= build.modes?.attributes === 'chaos' ? '🌀 Chaos' : '🎲 Realistic' %></span>
+      <span class="level-tag level-<%= info.level.id %>"><%= info.level.label %> · <%= info.level.floor %>–<%= data.ATTRIBUTES.max %></span>
+    </p>
+  </div>
+  <dl class="vitals">
+    <div><dt>POS <%= lockIcon('position') %></dt><dd><%= ph.position %><small>/<%= ph.secondaryPosition %></small></dd></div>
+    <div><dt>HT <%= lockIcon('height') %></dt><dd><%= formatInches(ph.height) %></dd></div>
+    <div><dt>WT <%= lockIcon('weight') %></dt><dd><%= ph.weight %><small>lbs</small></dd></div>
+    <div><dt>WS <%= lockIcon('wingspan') %></dt><dd><%= formatInches(ph.wingspan) %></dd></div>
+  </dl>
+  <div class="card-actions">
+    <% if (canRerollPhysicals) { %><%- reroll('physicals', 'Re-roll physicals') %><% } %>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="section-head">
+    <h2>Attributes</h2>
+    <%- reroll('attributes', 'Re-roll attributes') %>
+  </div>
+  <div class="attr-grid">
+    <% let barIndex = 0; for (const c of data.ATTRIBUTES.categories) {
+         const avg = Math.round(c.attributes.reduce((s, a) => s + build.attributes[a.id], 0) / c.attributes.length); %>
+      <div class="attr-group">
+        <h3><%= c.label %> <span class="cat-avg <%= ratingClass(avg) %>"><%= avg %></span></h3>
+        <% for (const a of c.attributes) { const v = build.attributes[a.id]; %>
+          <div class="stat">
+            <span class="stat-name"><%= a.label %></span>
+            <span class="bar"><span class="fill <%= ratingClass(v) %>" style="width: <%= v %>%; --i: <%= barIndex++ %>"></span></span>
+            <span class="stat-val <%= ratingClass(v) %>"><%= v %></span>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="section-head">
+    <h2>Badges <span class="muted">· <%= equipped.length %> equipped</span></h2>
+    <%- reroll('badges', 'Re-roll badges') %>
+  </div>
+  <div class="tier-summary">
+    <% for (let i = tiers.length - 1; i >= 1; i--) { const n = equipped.filter((t) => t === i).length; if (n) { %>
+      <span class="chip tier-<%= i %>"><span class="emblem"></span><%= n %> <%= tiers[i] %></span>
+    <% } } %>
+  </div>
+  <div class="badge-grid">
+    <% let badgeIndex = 0; for (const c of data.BADGES.categories) { %>
+      <div class="attr-group">
+        <h3><%= c.label %></h3>
+        <% for (const b of c.badges) { const t = build.badges[b.id]; %>
+          <div class="badge-row tier-<%= t %> <%= t ? '' : 'off' %>" data-tier="<%= t %>">
+            <span class="emblem" title="<%= tiers[t] %>"<% if (t) { %> style="--i: <%= badgeIndex++ %>"<% } %>></span>
+            <span class="badge-name"><%= b.label %></span>
+            <span class="badge-tier">
+              <% if (t) { %><%= tiers[t] %><% } else { %><span class="muted">—</span><% } %>
+            </span>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<section class="danger-zone">
+  <details>
+    <summary>Delete this player</summary>
+    <form action="/players/<%= build.id %>/delete" method="post" data-fx-submit="buzzer">
+      <p>This can't be undone.</p>
+      <button type="submit" class="btn btn-danger">Delete <%= build.name %></button>
+    </form>
+  </details>
+  <p class="muted">Created <%= new Date(build.createdAt).toLocaleDateString('en-US', { dateStyle: 'medium' }) %></p>
+</section>
+<%- include('partials/footer') %>

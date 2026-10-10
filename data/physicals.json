@@ -1,0 +1,18 @@
+{
+  "positions": [
+    { "id": "PG", "label": "Point Guard",    "minHeight": 70, "maxHeight": 78, "secondary": ["SG"] },
+    { "id": "SG", "label": "Shooting Guard", "minHeight": 74, "maxHeight": 80, "secondary": ["PG", "SF"] },
+    { "id": "SF", "label": "Small Forward",  "minHeight": 77, "maxHeight": 82, "secondary": ["SG", "PF"] },
+    { "id": "PF", "label": "Power Forward",  "minHeight": 79, "maxHeight": 84, "secondary": ["SF", "C"] },
+    { "id": "C",  "label": "Center",         "minHeight": 81, "maxHeight": 87, "secondary": ["PF"] }
+  ],
+  "limits": {
+    "height":   { "min": 63,  "max": 91 },
+    "weight":   { "min": 150, "max": 350 },
+    "wingspan": { "min": 60,  "max": 100 }
+  },
+  "realistic": {
+    "weight":   { "min": { "base": -70, "perInch": 3.2 }, "max": { "base": -105, "perInch": 4.6 } },
+    "wingspan": { "minOffset": -1, "maxOffset": 7 }
+  }
+}
