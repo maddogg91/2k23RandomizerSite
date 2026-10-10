@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 470" fill="none" stroke="#ffffff" stroke-width="2">
+  <!-- Half court: baseline at the bottom, half-court line at the top. -->
+  <rect x="1" y="1" width="498" height="468"/>
+  <path d="M190 469V279h120v190"/>
+  <path d="M170 469V279h160v190"/>
+  <circle cx="250" cy="279" r="60"/>
+  <path d="M30 469v-140a220 220 0 0 1 440 0v140"/>
+  <path d="M220 432h60"/>
+  <circle cx="250" cy="417" r="7.5"/>
+  <path d="M210 417a40 40 0 0 1 80 0"/>
+  <path d="M190 1a60 60 0 0 0 120 0"/>
+</svg>

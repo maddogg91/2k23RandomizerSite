@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+<section class="panel narrow">
+  <h1>Sign Up</h1>
+  <% if (error) { %><div class="flash flash-error"><%= error %></div><% } %>
+  <form action="/register" method="post" class="stack">
+    <label>Username
+      <input name="username" value="<%= username %>" autocomplete="username" pattern="[A-Za-z0-9_]{3,20}" title="3-20 letters, numbers, or underscores" required autofocus>
+    </label>
+    <label>Password
+      <input name="password" type="password" autocomplete="new-password" minlength="8" required>
+    </label>
+    <label>Confirm password
+      <input name="confirm" type="password" autocomplete="new-password" minlength="8" required>
+    </label>
+    <button type="submit" class="btn btn-block">Create Account</button>
+  </form>
+  <p class="muted center">Already signed up? <a href="/login">Log in</a></p>
+</section>
+<%- include('partials/footer') %>

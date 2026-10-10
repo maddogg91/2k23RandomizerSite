@@ -1,0 +1,358 @@
+{
+  "tiers": [
+    "None",
+    "Bronze",
+    "Silver",
+    "Gold",
+    "Hall of Fame",
+    "Legend"
+  ],
+  "categories": [
+    {
+      "id": "insideScoring",
+      "label": "Inside Scoring",
+      "badges": [
+        {
+          "id": "aerialWizard",
+          "label": "Aerial Wizard",
+          "requires": [
+            "drivingDunk",
+            "standingDunk"
+          ]
+        },
+        {
+          "id": "floatGame",
+          "label": "Float Game",
+          "requires": [
+            "drivingLayup"
+          ]
+        },
+        {
+          "id": "hookSpecialist",
+          "label": "Hook Specialist",
+          "requires": [
+            "postControl"
+          ]
+        },
+        {
+          "id": "layupMixmaster",
+          "label": "Layup Mixmaster",
+          "requires": [
+            "drivingLayup"
+          ]
+        },
+        {
+          "id": "paintProdigy",
+          "label": "Paint Prodigy",
+          "requires": [
+            "closeShot"
+          ]
+        },
+        {
+          "id": "physicalFinisher",
+          "label": "Physical Finisher",
+          "requires": [
+            "drivingLayup",
+            "strength"
+          ]
+        },
+        {
+          "id": "postFadePhenom",
+          "label": "Post Fade Phenom",
+          "requires": [
+            "postControl",
+            "midRange"
+          ]
+        },
+        {
+          "id": "postPowerhouse",
+          "label": "Post Powerhouse",
+          "requires": [
+            "postControl",
+            "strength"
+          ]
+        },
+        {
+          "id": "postUpPoet",
+          "label": "Post-Up Poet",
+          "requires": [
+            "postControl"
+          ]
+        },
+        {
+          "id": "posterizer",
+          "label": "Posterizer",
+          "requires": [
+            "drivingDunk",
+            "vertical"
+          ]
+        },
+        {
+          "id": "riseUp",
+          "label": "Rise Up",
+          "requires": [
+            "standingDunk",
+            "vertical"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shooting",
+      "label": "Shooting",
+      "badges": [
+        {
+          "id": "deadeye",
+          "label": "Deadeye",
+          "requires": [
+            "threePoint"
+          ]
+        },
+        {
+          "id": "limitlessRange",
+          "label": "Limitless Range",
+          "requires": [
+            "threePoint"
+          ]
+        },
+        {
+          "id": "miniMarksman",
+          "label": "Mini Marksman",
+          "requires": [
+            "threePoint",
+            "midRange"
+          ]
+        },
+        {
+          "id": "setShotSpecialist",
+          "label": "Set Shot Specialist",
+          "requires": [
+            "threePoint",
+            "midRange"
+          ]
+        },
+        {
+          "id": "shiftyShooter",
+          "label": "Shifty Shooter",
+          "requires": [
+            "midRange",
+            "threePoint"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "playmaking",
+      "label": "Playmaking",
+      "badges": [
+        {
+          "id": "ankleAssassin",
+          "label": "Ankle Assassin",
+          "requires": [
+            "ballHandle"
+          ]
+        },
+        {
+          "id": "bailOut",
+          "label": "Bail Out",
+          "requires": [
+            "passAccuracy"
+          ]
+        },
+        {
+          "id": "breakStarter",
+          "label": "Break Starter",
+          "requires": [
+            "passAccuracy"
+          ]
+        },
+        {
+          "id": "dimer",
+          "label": "Dimer",
+          "requires": [
+            "passAccuracy"
+          ]
+        },
+        {
+          "id": "handlesForDays",
+          "label": "Handles for Days",
+          "requires": [
+            "ballHandle"
+          ]
+        },
+        {
+          "id": "lightningLaunch",
+          "label": "Lightning Launch",
+          "requires": [
+            "speedWithBall"
+          ]
+        },
+        {
+          "id": "strongHandle",
+          "label": "Strong Handle",
+          "requires": [
+            "ballHandle",
+            "strength"
+          ]
+        },
+        {
+          "id": "unpluckable",
+          "label": "Unpluckable",
+          "requires": [
+            "ballHandle"
+          ]
+        },
+        {
+          "id": "versatileVisionary",
+          "label": "Versatile Visionary",
+          "requires": [
+            "passAccuracy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "defense",
+      "label": "Defense",
+      "badges": [
+        {
+          "id": "challenger",
+          "label": "Challenger",
+          "requires": [
+            "perimeterDefense"
+          ]
+        },
+        {
+          "id": "glove",
+          "label": "Glove",
+          "requires": [
+            "steal"
+          ]
+        },
+        {
+          "id": "highFlyingDenier",
+          "label": "High-Flying Denier",
+          "requires": [
+            "block",
+            "vertical"
+          ]
+        },
+        {
+          "id": "immovableEnforcer",
+          "label": "Immovable Enforcer",
+          "requires": [
+            "strength",
+            "interiorDefense"
+          ]
+        },
+        {
+          "id": "interceptor",
+          "label": "Interceptor",
+          "requires": [
+            "steal"
+          ]
+        },
+        {
+          "id": "offBallPest",
+          "label": "Off-Ball Pest",
+          "requires": [
+            "perimeterDefense"
+          ]
+        },
+        {
+          "id": "onBallMenace",
+          "label": "On-Ball Menace",
+          "requires": [
+            "perimeterDefense",
+            "acceleration"
+          ]
+        },
+        {
+          "id": "paintPatroller",
+          "label": "Paint Patroller",
+          "requires": [
+            "block"
+          ]
+        },
+        {
+          "id": "pickDodger",
+          "label": "Pick Dodger",
+          "requires": [
+            "perimeterDefense",
+            "acceleration"
+          ]
+        },
+        {
+          "id": "postLockdown",
+          "label": "Post Lockdown",
+          "requires": [
+            "interiorDefense"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rebounding",
+      "label": "Rebounding",
+      "badges": [
+        {
+          "id": "boxoutBeast",
+          "label": "Boxout Beast",
+          "requires": [
+            "defensiveRebound",
+            "strength"
+          ]
+        },
+        {
+          "id": "reboundChaser",
+          "label": "Rebound Chaser",
+          "requires": [
+            "offensiveRebound",
+            "defensiveRebound"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "generalOffense",
+      "label": "General Offense",
+      "badges": [
+        {
+          "id": "brickWall",
+          "label": "Brick Wall",
+          "requires": [
+            "strength"
+          ]
+        },
+        {
+          "id": "slipperyOffBall",
+          "label": "Slippery Off-Ball",
+          "requires": [
+            "speed",
+            "acceleration"
+          ]
+        },
+        {
+          "id": "pogoStick",
+          "label": "Pogo Stick",
+          "requires": [
+            "vertical"
+          ]
+        }
+      ]
+    }
+  ],
+  "realistic": {
+    "equipFrom": 55,
+    "equipSpan": 40,
+    "maxChance": 0.9,
+    "tierCutoffs": [
+      0,
+      72,
+      80,
+      88,
+      96
+    ],
+    "noise": 6
+  }
+}

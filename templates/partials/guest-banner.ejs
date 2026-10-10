@@ -1,0 +1,12 @@
+<% if (!user) { %>
+  <div class="guest-banner">
+    <div>
+      <strong>You're playing as a guest.</strong>
+      <span>Your players aren't saved and disappear when your session ends. Sign up or log in to keep them.</span>
+    </div>
+    <div class="guest-actions">
+      <a class="btn btn-sm" href="/register">Sign up to save</a>
+      <a class="btn btn-sm btn-ghost" href="/login">Log in</a>
+    </div>
+  </div>
+<% } %>

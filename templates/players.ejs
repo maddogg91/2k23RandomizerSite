@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Locker Room</p>
+    <h1>My Players</h1>
+  </div>
+  <a class="btn" href="/players/new">+ New Player</a>
+</section>
+<%- include('partials/guest-banner') %>
+<% if (!user && builds.length) { %><p class="hint">Guests can keep up to <%= guestLimit %> unsaved players (<%= builds.length %>/<%= guestLimit %> used).</p><% } %>
+<% if (!builds.length) { %>
+  <section class="panel center">
+    <h2>No players yet</h2>
+    <p class="muted">Roll your first build. Randomize everything or lock in the parts you want.</p>
+    <a class="btn btn-lg" href="/players/new">Create a Player</a>
+  </section>
+<% } else { %>
+  <section class="roster">
+    <% builds.forEach((b, i) => { %>
+      <article class="roster-card" data-fx-exit style="--i: <%= i %>">
+        <span class="ovr ovr-sm <%= ratingClass(b.info.overall) %>"><%= b.info.overall %></span>
+        <span class="roster-main">
+          <a class="roster-link" href="/players/<%= b.id %>"><strong><%= b.name %></strong></a>
+          <span class="muted"><%= b.info.archetype %></span>
+          <span class="roster-meta"><%= b.physicals.position %>/<%= b.physicals.secondaryPosition %> · <%= formatInches(b.physicals.height) %> · <%= b.physicals.weight %> lbs · <%= b.info.badgeCount %> badges</span>
+        </span>
+        <details class="roster-delete">
+          <summary aria-label="Delete <%= b.name %>" title="Delete player">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M9 3h6l1 2h4v2H4V5h4l1-2zm-3 6h12l-1 12H7L6 9zm4 2v8h1.5v-8H10zm3.5 0v8H15v-8h-1.5z"/></svg>
+          </summary>
+          <form action="/players/<%= b.id %>/delete" method="post" class="roster-confirm" data-fx-submit="buzzer">
+            <span>Delete <strong><%= b.name %></strong>? This can't be undone.</span>
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+          </form>
+        </details>
+      </article>
+    <% }) %>
+  </section>
+<% } %>
+<%- include('partials/footer') %>
