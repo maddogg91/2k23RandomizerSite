@@ -107,8 +107,8 @@ main { flex: 1; width: 100%; max-width: 1180px; margin: 0 auto; padding: 2rem cl
 .btn-sm { padding: 0.35rem 0.85rem; font-size: 0.9rem; }
 .btn-lg { padding: 0.85rem 1.75rem; font-size: 1.2rem; }
 .btn-block { width: 100%; }
-.btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--text); }
-.btn-ghost:hover { border-color: var(--accent-2); color: var(--accent-2); }
+.btn.btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--text); }
+.btn.btn-ghost:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .btn.btn-danger { background: #b3261e; }
 button.link { background: none; border: 0; color: var(--text); font: inherit; font-weight: 600; cursor: pointer; padding: 0; }
 button.link:hover { color: var(--accent-2); }
@@ -144,6 +144,20 @@ input:disabled, select:disabled { opacity: 0.45; }
 }
 .guest-banner strong { color: var(--accent-2); margin-right: 0.35rem; }
 .guest-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+/* ---- Sharing ---- */
+
+.shared-banner {
+  display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--panel);
+}
+.shared-banner strong { color: var(--accent-2); }
+.share-link { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+.share-link input { flex: 1 1 260px; margin: 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9rem; }
+.share-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.btn.is-copied { background: var(--r-great); color: #07080c; }
+.card-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
 /* ---- Home ---- */
 
