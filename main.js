@@ -388,7 +388,19 @@ function createApp(store, { sessionSecret, secureCookies = false, publicUrl } = 
 	return app;
 }
 
+// The MongoDB driver relies on globals (like Web Crypto) that only exist in newer Node, and
+// fails deep inside a query with "crypto is not defined" on older versions. Fail fast instead.
+function checkNodeVersion() {
+	const required = require('./package.json').engines.node.replace(/[^\d.]/g, '');
+	const [major, minor] = process.versions.node.split('.').map(Number);
+	const [reqMajor, reqMinor] = required.split('.').map(Number);
+	if (major < reqMajor || (major === reqMajor && minor < reqMinor)) {
+		throw new Error(`Node ${required}+ is required (running ${process.version}). Upgrade Node on this server, e.g. to 22 LTS.`);
+	}
+}
+
 async function start() {
+	checkNodeVersion();
 	const store = createStore();
 	await store.connect();
 	const production = process.env.NODE_ENV === 'production';
